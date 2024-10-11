@@ -1,0 +1,36 @@
+name: Deploy SQL
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Set up PostgreSQL connection
+        env:
+          PGHOST: ${{ secrets.PGHOST }}
+          PGPORT: ${{ secrets.PGPORT }}
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          PGDATABASE: ${{ secrets.PGDATABASE }}
+        run: |
+          echo "PGHOST=$PGHOST" >> $GITHUB_ENV
+          echo "PGPORT=$PGPORT" >> $GITHUB_ENV
+          echo "PGUSER=$PGUSER" >> $GITHUB_ENV
+          echo "PGPASSWORD=$PGPASSWORD" >> $GITHUB_ENV
+          echo "PGDATABASE=$PGDATABASE" >> $GITHUB_ENV
+
+      - name: Deploy SQL schema
+        run: |
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f schema.sql
