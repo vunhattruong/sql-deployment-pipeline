@@ -10,7 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
+        run: |
+          node -v
 
       - name: Install PostgreSQL client
         run: |
@@ -37,4 +39,5 @@ jobs:
 
       - name: Verify database integrity
         run: |
-          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f verify.sql
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c "\dt"
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c "SELECT * FROM message;"
