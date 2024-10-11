@@ -35,6 +35,10 @@ jobs:
         run: |
           psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f schema.sql
 
+      - name: Deploy users table
+        run: |
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f users.sql
+
       - name: Verify database integrity
         run: |
           psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f verify.sql
