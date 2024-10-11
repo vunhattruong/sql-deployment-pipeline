@@ -1,21 +1,20 @@
+\set ON_ERROR_STOP on
+
 -- Verify that the message table exists
 SELECT EXISTS (
   SELECT 1
-  FROM information_schema.tables
-  WHERE table_name = 'message'
+  FROM pg_tables
+  WHERE tablename = 'message'
 );
 
 -- Verify that the message table has the correct columns
-SELECT column_name
+SELECT column_name, data_type
 FROM information_schema.columns
 WHERE table_name = 'message'
-ORDER BY column_name;
+ORDER BY ordinal_position;
 
 -- Verify that the message table has the correct primary key
-SELECT indexname
-FROM pg_catalog.pg_indexes
+SELECT indexname, indexdef
+FROM pg_indexes
 WHERE tablename = 'message'
-  AND indexname = 'message_pkey';
-
--- Exit with a non-zero status code if any of the above queries return an error
-\set ON_ERROR_STOP on
+AND indexname = 'message_pkey';
