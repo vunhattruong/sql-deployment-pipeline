@@ -3,17 +3,14 @@ name: Deploy SQL
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-        run: |
-          npm install
-        node-version: '16'
+        uses: actions/checkout@v4
 
       - name: Install PostgreSQL client
         run: |
@@ -40,5 +37,4 @@ jobs:
 
       - name: Verify database integrity
         run: |
-          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c "\dt"
-          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c "SELECT * FROM public.message"
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f verify.sql
