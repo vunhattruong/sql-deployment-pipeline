@@ -3,7 +3,7 @@ name: Deploy SQL
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -34,8 +34,10 @@ jobs:
       - name: Deploy SQL schema
         run: |
           psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f schema.sql
-          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f create_user_table.sql
-          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f insert_users.sql
+
+      - name: Insert example data
+        run: |
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f data.sql
 
       - name: Verify database integrity
         run: |
