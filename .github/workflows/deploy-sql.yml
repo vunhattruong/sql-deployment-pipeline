@@ -34,3 +34,7 @@ jobs:
       - name: Deploy SQL schema
         run: |
           psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f schema.sql
+
+      - name: Verify database integrity
+        run: |
+          psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f verify.sql
