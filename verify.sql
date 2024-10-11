@@ -18,3 +18,22 @@ SELECT indexname, indexdef
 FROM pg_indexes
 WHERE tablename = 'message'
 AND indexname = 'message_pkey';
+
+-- Verify that the user table exists
+SELECT EXISTS (
+  SELECT 1
+  FROM pg_tables
+  WHERE tablename = 'user'
+);
+
+-- Verify that the user table has the correct columns
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_name = 'user'
+ORDER BY ordinal_position;
+
+-- Verify that the user table has the correct primary key
+SELECT indexname, indexdef
+FROM pg_indexes
+WHERE tablename = 'user'
+AND indexname = 'user_pkey';
